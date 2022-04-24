@@ -1,0 +1,46 @@
+---
+rbenv_root: ${HOME}/.rbenv
+
+rbenv_rubies:
+  - version: 2.7.4
+    env:
+      RUBY_CONFIGURE_OPTS: --disable-install-doc --enable-shared
+
+
+rbenv_version: v1.2.0
+rbenv_repo: https://github.com.cnpmjs.org/rbenv/rbenv.git
+
+rbenv_basic_plugins:
+  - {
+    name: ruby-build,    
+    repo: https://github.com.cnpmjs.org/rbenv/ruby-build.git,
+    version: master
+  }
+  - {
+    name: rbenv-vars,
+    repo: https://github.com.cnpmjs.org/rbenv/rbenv-vars.git,
+    version: master
+  }
+
+rbenv_extra_plugins:
+  - {
+    name: rbenv-china-mirror,
+    repo: https://github.com.cnpmjs.org/AndorChen/rbenv-china-mirror.git,
+    version: master
+  }
+
+rbenv_build_dep:
+  - autoconf
+  - bison
+  - build-essential
+  - libssl-dev
+  - libyaml-dev
+  - libreadline6-dev
+  - zlib1g-dev
+  - libncurses5-dev
+  - libffi-dev
+  - libgdbm6
+  - libgdbm-dev
+  - libdb-dev
+
+rbenv_extra_dep: ['acl']

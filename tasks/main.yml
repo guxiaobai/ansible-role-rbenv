@@ -1,0 +1,42 @@
+---
+- name: install dependencies
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_flattened:
+    - "{{ rbenv_build_dep }}"
+    - "{{ rbenv_extra_dep }}"
+
+- name: install loader script
+  copy:
+    src: rbenv.sh
+    dest: /etc/profile.d/rbenv.sh
+
+- name: install rbenv
+  git:
+    repo: "{{ rbenv_repo }}"
+    dest: "{{ rbenv_root }}"
+    version: "{{ rbenv_version }}"
+  become: yes
+  become_user: "{{ rbenv_user | mandatory }}"
+
+- name: install plugins
+  git:
+    repo: "{{item.repo }}"
+    dest: "{{ rbenv_root }}/plugins/{{ item.name }}"
+  with_flattened:
+    - "{{ rbenv_basic_plugins }}"
+    - "{{ rbenv_extra_plugins }}"
+  become: yes
+  become_user: "{{ rbenv_user | mandatory }}"
+
+- name: "install ruby"
+  shell: $0 -lc "{{ rbenv_root }}/bin/rbenv install --skip-existing {{ item.version }}"
+  args:
+    creates: "{{ rbenv_root }}/versions/{{ item.version }}"
+  environment: "{{ item.env | default({}) }}"
+  with_items:
+    - "{{ rbenv_rubies }}"
+
+  become: yes
+  become_user: "{{ rbenv_user | mandatory }}"
